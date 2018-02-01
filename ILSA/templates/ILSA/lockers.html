@@ -1,0 +1,12 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'ILSA/style.css' %}" />
+{% if locker_list %}
+    <ul>
+    {% for locker in locker_list %}
+        <li>Locker: {{ locker.lock_num }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No lockers are configured.</p>
+{% endif %}
