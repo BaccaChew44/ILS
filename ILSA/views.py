@@ -6,7 +6,6 @@ from .models import Locker
 def HomepageView(request):
     return render(request, 'ILSA/homepage.html')
 
-
 def LockersView(request):
     lockers = Locker.objects.all()
     swiped_card = request.session.get('card')
@@ -15,7 +14,6 @@ def LockersView(request):
         'swiped_card': swiped_card,
     }
     return render(request, 'ILSA/lockers.html', context)
-
 
 def swipe(request):
     request.session['card'] = 'C9 I8 L0'
@@ -27,4 +25,6 @@ def check_out(request):
     print(chosen_locker.lock_num)
     return redirect(reverse('ILSA:home page'))
 
+def arduino(request):
+    """Starting view for Arduino communication"""
 
