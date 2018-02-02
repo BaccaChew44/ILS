@@ -7,6 +7,7 @@ class Locker(models.Model):
     card_uid = models.CharField(max_length=200, default=None)
     check_out_time = models.TimeField('Time Checked Out', default=None)
     unlockable = models.BooleanField(default=False)
+    battery_level = models.IntegerField(max_length=100, default=100)
 
 
 class Admin(models.Model):
