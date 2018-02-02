@@ -1,9 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
-from django.urls import reverse
-from django.views import generic
-from django.utils import timezone
-from django.template import loader
+from django.shortcuts import render
+from django.shortcuts import redirect
 
 from .models import Locker
 
@@ -11,12 +7,19 @@ def HomepageView(request):
     return render(request, 'ILSA/homepage.html')
 
 
-class LockersView(generic.ListView):
-    template_name = 'ILSA/lockers.html'
-    context_object_name = 'locker_list'
+def LockersView(request):
+    lockers = Locker.objects.all()
+    swiped_card = request.session.get('card')
+    context = {
+        'locker_list': lockers,
+        'swiped_card': swiped_card,
+    }
+    return render(request, 'ILSA/lockers.html', context)
 
-    def get_queryset(self):
-        return Locker.objects.all()
 
-def swipe(request, card_id):
-    return HttpResponseRedirect('/lockers/')
+def swipe(request):
+    request.session['card'] = 'C9 I8 L0'
+    request.session.modified = True
+    print('Hello!')
+    print(request.session['card'])
+    return redirect('ILSA:lockers')

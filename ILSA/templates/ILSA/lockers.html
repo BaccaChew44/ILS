@@ -6,6 +6,7 @@
     {% for locker in locker_list %}
         <li>Locker: {{ locker.lock_num }}</li>
     {% endfor %}
+        <h1>{{ swiped_card }}</h1>
     </ul>
 {% else %}
     <p>No lockers are configured.</p>
