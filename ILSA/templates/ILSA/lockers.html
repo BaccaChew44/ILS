@@ -3,9 +3,14 @@
 <link rel="stylesheet" type="text/css" href="{% static 'ILSA/style.css' %}" />
 {% if locker_list %}
     <ul>
-    {% for locker in locker_list %}
-        <li>Locker: {{ locker.lock_num }}</li>
-    {% endfor %}
+        <form action="./check_out" method="post">
+        {% csrf_token %}
+        {% for locker in locker_list %}
+            <input type="radio" name="locker" id="{{ locker.lock_num }}" value="{{ locker.id }}"/>
+            <label for="{{ locker.lock_num }}">Locker: {{ locker.lock_num }}</label><br />
+        {% endfor %}
+            <input type="submit" value="Check Out" />
+        </form>
         <h1>{{ swiped_card }}</h1>
     </ul>
 {% else %}

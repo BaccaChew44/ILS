@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.shortcuts import redirect
+from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, reverse
 
 from .models import Locker
 
@@ -20,6 +20,11 @@ def LockersView(request):
 def swipe(request):
     request.session['card'] = 'C9 I8 L0'
     request.session.modified = True
-    print('Hello!')
-    print(request.session['card'])
     return redirect('ILSA:lockers')
+
+def check_out(request):
+    chosen_locker = get_object_or_404(Locker, pk=request.POST['locker'])
+    print(chosen_locker.lock_num)
+    return redirect(reverse('ILSA:home page'))
+
+
