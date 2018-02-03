@@ -9,5 +9,12 @@ class LockerAdmin(admin.ModelAdmin):
     list_display = ('lock_num', 'card_uid', 'check_out_time', 'status')
     list_filter = ['check_out_time']
 
-admin.site.register(Locker, LockerAdmin)
+class AdminPage(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['name']}),
+        (None, {'fields': ['admin_uid']}),
+    ]
+    list_display = ('name', 'admin_uid')
 
+admin.site.register(Locker, LockerAdmin)
+admin.site.register(Admin, AdminPage)
