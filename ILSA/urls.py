@@ -9,4 +9,5 @@ urlpatterns =[
     path('lockers/check_in', views.check_in, name='check in'),
     path('lockers/arduino', views.arduino, name='arduino'),
     path('lockers/success', views.success, name='success'),
+    path('swipetest', views.swipetest, name='swipe test'),
 ]

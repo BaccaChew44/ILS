@@ -4,6 +4,13 @@ from django.utils import timezone
 import datetime
 
 from .models import Locker, Admin
+"""
+MATTS CODE IS COMMENTED OUT
+THE FILES ARE ONLY ON THE PI
+import sys
+sys.path.append('/home/pi/libnfc/libnfc-1.7.0/examples')
+from testCall import getCardUID
+"""
 
 def HomepageView(request):
     """
@@ -26,12 +33,14 @@ def LockersView(request):
 
 def swipe(request):
     """
+    MATTS CODE IS COMMENTED OUT
+    THE FILES ARE ONLY ON THE PI
     function called when a card is swiped
     checks for the card value in the admin table first, directs to admin login if found
     then checks if the card is already being used, if in use flags the locker for unlock
     and removes the card uid from the locker
-    """
-    swiped_card_number = 'C9 I8 L0'
+
+    swiped_card_number = getCardUID()
     if Admin.objects.filter(admin_uid=swiped_card_number).exists():
         return redirect(reverse('admin:index'))
     elif Locker.objects.filter(card_uid=swiped_card_number).exists():
@@ -46,13 +55,16 @@ def swipe(request):
         request.session.modified = True
 
         return redirect('ILSA:success')
+    """
 
     """
     card wasn't in database, let user choose which locker to check into
-    """
+    
     request.session['card'] = swiped_card_number
     request.session.modified = True
+    """
     return redirect('ILSA:lockers')
+
 
 def check_in(request):
     """
@@ -85,3 +97,29 @@ def success(request):
         'flag': check_out_flag,
     }
     return render(request, 'ILSA/success.html', context)
+
+def swipetest(request):
+    """
+    testing swipe function
+    """
+    swiped_card_number = 'TEST Swipe'
+    print('swipe test')
+    if Admin.objects.filter(admin_uid=swiped_card_number).exists():
+        return redirect(reverse('admin:index'))
+    elif Locker.objects.filter(card_uid=swiped_card_number).exists():
+        locker = Locker.objects.get(card_uid=swiped_card_number)
+        locker.card_uid = '0'
+        locker.check_out_time = datetime.datetime.now().strftime('%H:%M:%S')
+        locker.unlockable = True
+        locker.save()
+
+        request.session['locker_number'] = locker.lock_num
+        request.session['check_out_flag'] = True
+        request.session.modified = True
+
+        return redirect('ILSA:success')
+
+    request.session['card'] = swiped_card_number
+    request.session.modified = True
+
+    return redirect('ILSA:lockers')
