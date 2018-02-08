@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, reverse
 from django.utils import timezone
+from django.http import HttpResponse
 import datetime
 
 from .models import Locker, Admin
@@ -83,8 +84,31 @@ def check_in(request):
 
     return redirect('ILSA:success')
 
-def arduino(request):
+
+def arduino(request, mac_address, battery_level):
     """Starting view for Arduino communication"""
+    if Locker.objects.filter(mac_addr=mac_address).exists():
+        locker = Locker.objects.get(mac_addr=mac_address)
+        if locker.status == 'Low Battery':
+            return HttpResponse("Sleep")
+        locker.battery_level = battery_level
+        if locker.unlockable:
+            if locker.card_uid != '0':
+                locker.unlockable = False
+                locker.save()
+                return HttpResponse("Unlock")
+            else:
+                locker.unlockable = False
+                locker.status = 'Open'
+                if battery_level < 50:
+                    locker.status = 'Low Battery'
+                locker.save()
+                return HttpResponse("Unlock")
+        else:
+            return HttpResponse("Lock")
+    else:
+        return HttpResponse("No Locker")
+
 
 def success(request):
     """

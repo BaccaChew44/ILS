@@ -1,2 +1,5 @@
 /venv/
 /db.sqlite3
+.idea/*
+ILSA/__pycache__/*
+ILSA/migrations/*
