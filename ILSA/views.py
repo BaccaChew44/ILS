@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect, reverse
 from django.utils import timezone
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 import datetime
 
 from .models import Locker, Admin
@@ -68,7 +69,7 @@ def swipe(request, card_uid):
 
     return redirect('ILSA:lockers')
 
-
+@csrf_exempt
 def NFC(request):
     card = getCardUID()
     if card == 'No Swipe':
