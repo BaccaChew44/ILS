@@ -86,20 +86,30 @@ def check_in(request):
 
 
 def arduino(request, mac_address, battery_level):
-    """Starting view for Arduino communication"""
+    """
+    Arduino logic for Django server
+    :param mac_address: The mac address for the locker's ESP8266
+    :param battery_level: The battery level of the locker's battery
+    :return:
+    """
     if Locker.objects.filter(mac_addr=mac_address).exists():
         locker = Locker.objects.get(mac_addr=mac_address)
+        """The locker's battery is low, set it to sleep"""
         if locker.status == 'Low Battery':
             return HttpResponse("Sleep")
         locker.battery_level = battery_level
+        """Has the locker been flagged as unlockable?"""
         if locker.unlockable:
             if locker.card_uid != '0':
+                """Locker is flagged and there is a card uid set, so the locker is being checked in"""
                 locker.unlockable = False
                 locker.save()
                 return HttpResponse("Unlock")
             else:
+                """Locker is flagged and there is no card uid set, so the locker is being checked out"""
                 locker.unlockable = False
                 locker.status = 'Open'
+                """But if the battery is low, we don't want the locker to be available anymore"""
                 if battery_level < 50:
                     locker.status = 'Low Battery'
                 locker.save()
@@ -128,9 +138,11 @@ def swipetest(request):
     """
     swiped_card_number = 'TEST Swipe'
     print('swipe test')
+    """If the card uid is in the admin table, redirect to admin login"""
     if Admin.objects.filter(admin_uid=swiped_card_number).exists():
         return redirect(reverse('admin:index'))
     elif Locker.objects.filter(card_uid=swiped_card_number).exists():
+        """The card uid is already in the database, so were checking out of that locker"""
         locker = Locker.objects.get(card_uid=swiped_card_number)
         locker.card_uid = '0'
         locker.check_out_time = datetime.datetime.now().strftime('%H:%M:%S')
@@ -143,6 +155,7 @@ def swipetest(request):
 
         return redirect('ILSA:success')
 
+    """Card wasn't in either database so pass the card uid to the locker view"""
     request.session['card'] = swiped_card_number
     request.session.modified = True
 
