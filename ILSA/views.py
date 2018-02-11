@@ -69,6 +69,16 @@ def swipe(request, card_uid):
     return redirect('ILSA:lockers')
 
 
+def NFC(request):
+    card = getCardUID()
+    if card == 'No Swipe':
+        print('No Swipe')
+    elif card == 'Error':
+        print('Error')
+    else:
+        redirect('ILSA:swipe', card)
+
+
 def check_in(request):
     """
     get the chosen locker and check it out to the swiped card

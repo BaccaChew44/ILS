@@ -25,7 +25,7 @@ SECRET_KEY = '&cnas_s9lh%mcw*0=$#55i6a2n$gcit&8r6f8co_t3yqb0*^2&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.1']
 
 
 # Application definition
