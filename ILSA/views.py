@@ -34,6 +34,7 @@ def LockersView(request):
     }
     return render(request, 'ILSA/lockers.html', context)
 
+@csrf_exempt
 def swipe(request, card_uid):
     """
     MATTS CODE IS COMMENTED OUT
@@ -73,11 +74,11 @@ def swipe(request, card_uid):
 def NFC(request):
     card = getCardUID()
     if card == 'No Swipe':
-        print('No Swipe')
+        return HttpResponse('No Swipe')
     elif card == 'Error':
-        print('Error')
+        return HttpResponse('Error')
     else:
-        redirect('ILSA:swipe', card)
+        return HttpResponse(card)
 
 
 def check_in(request):
