@@ -12,8 +12,8 @@ $(document).ready(function () {
                 location.reload(true);
             } else {
                 $.ajax({
-                    type: "POST",
-                    url: "http://192.168.1.1:8000/ILSA/swipe/" + data,
+                    type: "GET",
+                    url: "http://192.168.1.1:8000/ILSA/swipe/" + data + "/",
                     async: false,
                     success: function (swipe_response) {
                         window.location.href = swipe_response;
