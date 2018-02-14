@@ -3,6 +3,7 @@ from django.shortcuts import redirect, reverse
 from django.utils import timezone
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 import datetime
 
 from .models import Locker, Admin
@@ -47,7 +48,7 @@ def swipe(request, card_uid):
 
     swiped_card_number = card_uid
     if Admin.objects.filter(admin_uid=swiped_card_number).exists():
-        return redirect(reverse('admin:index'))
+        return JsonResponse({'response': 'admin'})
     elif Locker.objects.filter(card_uid=swiped_card_number).exists():
         locker = Locker.objects.get(card_uid=swiped_card_number)
         locker.card_uid = '0'
@@ -59,7 +60,7 @@ def swipe(request, card_uid):
         request.session['check_out_flag'] = True
         request.session.modified = True
 
-        return redirect('ILSA:success')
+        return JsonResponse({'response': 'success'})
 
 
 
@@ -68,7 +69,7 @@ def swipe(request, card_uid):
     request.session['card'] = swiped_card_number
     request.session.modified = True
 
-    return redirect('ILSA:lockers')
+    return JsonResponse({'response': 'lockers'})
 
 @csrf_exempt
 def NFC(request):
