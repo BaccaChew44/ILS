@@ -2,7 +2,7 @@ from django.db import models
 import datetime
 
 class Locker(models.Model):
-    lock_num = models.IntegerField()
+    lock_num = models.IntegerField('Locker Number')
     mac_addr = models.CharField(max_length=100)
     status = models.CharField(max_length=50, default='Open')
     card_uid = models.CharField(max_length=200, default='0')
@@ -11,7 +11,7 @@ class Locker(models.Model):
     battery_level = models.IntegerField(default=100)
 
     def __str__(self):
-        return str(self.lock_num)
+        return 'Locker: ' + str(self.lock_num)
 
 
 class Admin(models.Model):
