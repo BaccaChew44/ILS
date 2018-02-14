@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="{% static 'ILSA/style.css' %}" />
 {% if locker_list %}
     <ul>
-        <form action="./check_in" method="post">
+        <form action="./check_in/" method="post">
         {% csrf_token %}
         {% for locker in locker_list %}
             <input type="radio" name="locker" id="{{ locker.lock_num }}" value="{{ locker.id }}"/>
