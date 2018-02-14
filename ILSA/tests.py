@@ -42,7 +42,7 @@ class LockerViewTests(TestCase):
         response = self.client.get(reverse('ILSA:lockers'))
         self.assertQuerysetEqual(
             response.context['locker_list'],
-            ['<Locker: 1>']
+            ['<Locker: Locker: 1>']
         )
 
     def test_two_lockers(self):
@@ -55,7 +55,7 @@ class LockerViewTests(TestCase):
         response = self.client.get(reverse('ILSA:lockers'))
         self.assertQuerysetEqual(
             response.context['locker_list'],
-            ['<Locker: 1>', '<Locker: 5>'],
+            ['<Locker: Locker: 1>', '<Locker: Locker: 5>'],
             ordered=False
         )
 
