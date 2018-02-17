@@ -1,3 +1,5 @@
+{% load static %}
+<link href="{% static 'ILSA/style.css' %}" rel="stylesheet">
 
 <!DOCTYPE html>
 <html>
@@ -5,6 +7,8 @@
         <meta http-equiv="refresh" content="3;url={% url 'ILSA:home page' %}" />
     </head>
     <body>
+    <header>
+        <h2> Intelligent Locker System </h2>
     {% if flag %}
         <h1>You have checked out of locker {{ lock_num }}!</h1>
         <h1>Please go to <strong>locker {{ lock_num }} </strong> and press the button to unlock your locker.</h1>
@@ -15,5 +19,6 @@
         <h1>Please go to <strong>locker {{ lock_num }} </strong> and press the button to unlock your locker.</h1>
         <h1>Returning home in 3 seconds...</h1>
     {% endif %}
+    </header>
     </body>
 </html>

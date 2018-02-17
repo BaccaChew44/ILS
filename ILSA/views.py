@@ -10,11 +10,11 @@ from .models import Locker, Admin
 """
 MATTS CODE IS COMMENTED OUT
 THE FILES ARE ONLY ON THE PI
-"""
+
 import sys
 sys.path.append('/home/pi/libnfc/libnfc-1.7.0/examples')
 from testCall import getCardUID
-
+"""
 
 def HomepageView(request):
     """
@@ -73,6 +73,7 @@ def swipe(request, card_uid):
 
 @csrf_exempt
 def NFC(request):
+    """
     card = getCardUID()
     if card == 'No Swipe':
         return HttpResponse('No Swipe')
@@ -80,25 +81,26 @@ def NFC(request):
         return HttpResponse('Error')
     else:
         return HttpResponse(card)
+"""
 
-
-def check_in(request):
+def check_in(request, lock_num):
     """
     get the chosen locker and check it out to the swiped card
     """
-    chosen_locker = get_object_or_404(Locker, pk=request.POST['locker'])
-    request.session['locker_number'] = chosen_locker.lock_num
-    request.session['check_out_flag'] = False
-    request.session.modified = True
+    if Locker.objects.filter(lock_num=lock_num).exists():
+        locker = Locker.objects.get(lock_num=lock_num)
+        request.session['locker_number'] = locker.lock_num
+        request.session['check_out_flag'] = False
+        request.session.modified = True
 
-    chosen_locker.card_uid = request.session.get('card')
-    chosen_locker.check_out_time = datetime.datetime.now().strftime('%H:%M:%S')
-    chosen_locker.status = 'Taken'
-    chosen_locker.unlockable = True
-    chosen_locker.save()
-
-    return redirect('ILSA:success')
-
+        locker.card_uid = request.session.get('card')
+        locker.check_out_time = datetime.datetime.now().strftime('%H:%M:%S')
+        locker.status = 'Taken'
+        locker.unlockable = True
+        locker.save()
+        return redirect('ILSA:success')
+    else:
+        return redirect('ILSA')
 
 def arduino(request, mac_address, battery_level):
     """
@@ -110,7 +112,7 @@ def arduino(request, mac_address, battery_level):
     if Locker.objects.filter(mac_addr=mac_address).exists():
         locker = Locker.objects.get(mac_addr=mac_address)
         """The locker's battery is low, set it to sleep"""
-        if locker.status == 'Low Battery':
+        if locker.status == 'Low_Battery':
             return HttpResponse("Sleep")
         locker.battery_level = battery_level
         """Has the locker been flagged as unlockable?"""
@@ -126,7 +128,7 @@ def arduino(request, mac_address, battery_level):
                 locker.status = 'Open'
                 """But if the battery is low, we don't want the locker to be available anymore"""
                 if battery_level < 50:
-                    locker.status = 'Low Battery'
+                    locker.status = 'Low_Battery'
                 locker.save()
                 return HttpResponse("Unlock")
         else:

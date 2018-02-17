@@ -1,18 +1,105 @@
-{% load static %}
+{% load staticfiles %}
+<link href="{% static 'ILSA/bootstrap.min.css' %}" rel="stylesheet">
+<script src="{% static 'ILSA/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'ILSA/bootstrap.min.js' %}"></script>
+<link href="{% static 'ILSA/style.css' %}" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="{% static 'ILSA/style.css' %}" />
-{% if locker_list %}
-    <ul>
-        <form action="./check_in/" method="post">
-        {% csrf_token %}
+
+<html>
+<style>
+    .locker {
+        width:20%;
+        height:25%;
+        position: relative;
+    }
+    .Open {
+        background-color: green;
+        color: white;
+    }
+    .Taken {
+        background-color: red;
+        color: white;
+        opacity: .4;
+    }
+    .Low_Battery {
+        background-color: darkgrey;
+        color: black;
+        opacity: .4;
+    }
+    #submit {
+        width: 80%;
+        height:10%;
+        background-color: lightgrey;
+        color: black;
+    }
+    .divider{
+        height:10px;
+        width: 100%;
+    }
+
+</style>
+<body id="body">
+<header>
+    <h2> Intelligent Locker System </h2>
+    <h1> Please Choose an Available Locker </h1>
+</header>
+ {% if locker_list %}
+    <div>
         {% for locker in locker_list %}
-            <input type="radio" name="locker" id="{{ locker.lock_num }}" value="{{ locker.id }}"/>
-            <label for="{{ locker.lock_num }}">Locker: {{ locker.lock_num }}</label><br />
+            {% if forloop.counter|divisibleby:2 %}
+                {% else %}
+                    <button class="locker {{locker.status}}" id="{{locker.lock_num}}" onclick="lockerSelected(this.id)">{{locker.lock_num}}</button>
+                {% endif %}
         {% endfor %}
-            <input type="submit" value="Check In" />
-        </form>
-        <h1>{{ swiped_card }}</h1>
-    </ul>
-{% else %}
+        </div>
+        <div>
+            {% for locker in locker_list %}
+                {% if forloop.counter|divisibleby:2 %}
+                    <button class="locker {{locker.status}}" id="{{locker.lock_num}}" onclick="lockerSelected(this.id)">{{locker.lock_num}}</button>
+                {% else %}
+                {% endif %}
+            {% endfor %}
+        </div>
+ {% else %}
     <p>No lockers are configured.</p>
-{% endif %}
+ {% endif %}
+ <div class="divider" />
+
+<script>
+function lockerSelected(selected_id) {
+    if (document.getElementById('submit') === null) {
+        var button = document.createElement('input');
+        button.type = 'button';
+        button.value = 'Check Out Locker ' + selected_id;
+        button.id = 'submit';
+        button.addEventListener("click", function() {
+            window.location.href= './check_in/' + selected_id + '/'
+        });
+        var body = document.getElementById("body");
+        body.append(button);
+    } else {
+        var submit_button = document.getElementById('submit');
+        submit_button.parentNode.removeChild(submit_button);
+        button = document.createElement('input');
+        button.type = 'button';
+        button.value = 'Check Out Locker ' + selected_id;
+        button.id = 'submit';
+        button.addEventListener("click", function() {
+            window.location.href= './check_in/' + selected_id + '/'
+        });
+        body = document.getElementById("body");
+        body.append(button);
+    }
+}
+
+$('.Taken').each(function () {
+    this.disabled = true;
+});
+$('.Low_Battery').each(function () {
+    this.disabled = true;
+});
+
+</script>
+
+</body>
+</html>

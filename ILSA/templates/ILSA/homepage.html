@@ -4,11 +4,16 @@
         <title>ILS: Intelligent Locker System</title>
     </head>
     <body>
-        <h1>Please Swipe Your Bearcat Card!</h1>
+    <header>
+        <h2> Intelligent Locker System </h2>
+        <h1> Welcome to the University of Cincinnati Recreation Center</h1>
+        <h1>Please Swipe Your Bearcat Card to Access a Locker!</h1>
+        </header>
     </body>
 
 </html>
 
 {% load staticfiles %}
-<script src="{% static "ILSA/jquery-3.3.1.min.js" %}"></script>
-<script type="text/javascript" src="{% static "ILSA/NFCRead.js" %}"> </script>
+<script src="{% static 'ILSA/jquery-3.3.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'ILSA/NFCRead.js' %}"> </script>
+<link href="{% static 'ILSA/style.css' %}" rel="stylesheet">
