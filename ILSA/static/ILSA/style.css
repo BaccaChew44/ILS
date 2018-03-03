@@ -5,10 +5,13 @@ h1 {
     text-align: center;
     padding: 1em;
 }
-h2 {
-    padding: 1em;
+h2.ILS {
     color: red;
     background-color: black;
     clear: left;
     text-align: center;
+}
+h3 {
+    text-align: center;
+    padding: 1em;
 }
