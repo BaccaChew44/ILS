@@ -1,4 +1,7 @@
 {% load static %}
+<link href="{% static 'ILSA/bootstrap.min.css' %}" rel="stylesheet">
+<script src="{% static 'ILSA/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'ILSA/bootstrap.min.js' %}"></script>
 <link href="{% static 'ILSA/style.css' %}" rel="stylesheet">
 
 <!DOCTYPE html>
@@ -12,12 +15,12 @@
     {% if flag %}
         <h1>You have checked out of locker {{ lock_num }}!</h1>
         <h1>Please go to <strong>locker {{ lock_num }} </strong> and press the button to unlock your locker.</h1>
-        <h1>Thank you for using the Intelligent Locker System!</h1>
-        <h1>Returning home in 3 seconds...</h1>
+        <h3>Thank you for using the Intelligent Locker System!</h3>
+        <h3>Returning home in 3 seconds...</h3>
     {% else %}
         <h1>You have checked into locker {{ lock_num }}!</h1>
         <h1>Please go to <strong>locker {{ lock_num }} </strong> and press the button to unlock your locker.</h1>
-        <h1>Returning home in 3 seconds...</h1>
+        <h3>Returning home in 3 seconds...</h3>
     {% endif %}
     </header>
     </body>
