@@ -33,7 +33,7 @@
         font-size: 50px;
     }
     #submit {
-        width: 40%;
+        width: 60%;
         height: 15%;
         background-color: lightgrey;
         color: black;
@@ -41,7 +41,7 @@
         font-size: 50px;
     }
     #cancel {
-        width: 40%;
+        width: 20%;
         height: 15%;
         background-color: lightgrey;
         color: black;
@@ -82,38 +82,21 @@
  {% else %}
     <p>No lockers are configured.</p>
  {% endif %}
- <div class="divider" />
+ <div class="divider"> </div>
+ <button class="submit" id="submit" disabled="true">Check Out Locker</button>
  <button class="cancel" id="cancel" onclick="cancelSelected()">Cancel</button>
 </body>
 </html>
 
 <script>
     function lockerSelected(selected_id) {
-        if (document.getElementById('submit') === null) {
-            var button = document.createElement('input');
-            button.type = 'button';
-            button.value = 'Check Out Locker ' + selected_id;
-            button.id = 'submit';
-            button.addEventListener("click", function() {
-                window.location.href= './check_in/' + selected_id + '/'
-            });
-            var body = document.getElementById("body");
-            body.append(button);
-
-            document.getElementById('cancel').style.width = "40%";
-        } else {
-            var submit_button = document.getElementById('submit');
-            submit_button.parentNode.removeChild(submit_button);
-            button = document.createElement('input');
-            button.type = 'button';
-            button.value = 'Check Out Locker ' + selected_id;
-            button.id = 'submit';
-            button.addEventListener("click", function() {
-                window.location.href= './check_in/' + selected_id + '/'
-            });
-            body = document.getElementById("body");
-            body.append(button);
-        }
+        var submit_button = document.getElementById('submit');
+        submit_button.value = 'Check Out Locker ' + selected_id;
+        submit_button.innerHTML = 'Check Out Locker ' + selected_id;
+        submit_button.addEventListener("click", function() {
+            window.location.href= './check_in/' + selected_id + '/'
+        });
+        submit_button.removeAttribute("disabled");
     }
 
     function cancelSelected() {
