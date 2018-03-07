@@ -3,7 +3,6 @@ $(document).ready(function () {
         type: "GET",
         url: "http://192.168.1.1:8000/ILSA/NFC",
         dataType: "text",
-        async: false,
         success: function(data) {
             if (data === "No Swipe") {
                 location.reload(true);
@@ -14,7 +13,6 @@ $(document).ready(function () {
                 $.ajax({
                     type: "GET",
                     url: "http://192.168.1.1:8000/ILSA/swipe/" + data + "/",
-                    async: false,
                     success: function (swipe_response) {
                         var value = swipe_response.response;
                         var url = "http://192.168.1.1:8000/";

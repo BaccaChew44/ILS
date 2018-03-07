@@ -7,14 +7,11 @@ from django.http import JsonResponse
 import datetime
 
 from .models import Locker, Admin
-"""
-MATTS CODE IS COMMENTED OUT
-THE FILES ARE ONLY ON THE PI
 
 import sys
 sys.path.append('/home/pi/libnfc/libnfc-1.7.0/examples')
 from testCall import getCardUID
-"""
+
 
 def HomepageView(request):
     """
@@ -38,8 +35,6 @@ def LockersView(request):
 @csrf_exempt
 def swipe(request, card_uid):
     """
-    MATTS CODE IS COMMENTED OUT
-    THE FILES ARE ONLY ON THE PI
     function called when a card is swiped
     checks for the card value in the admin table first, directs to admin login if found
     then checks if the card is already being used, if in use flags the locker for unlock
@@ -73,7 +68,7 @@ def swipe(request, card_uid):
 
 @csrf_exempt
 def NFC(request):
-    """
+
     card = getCardUID()
     if card == 'No Swipe':
         return HttpResponse('No Swipe')
@@ -81,7 +76,7 @@ def NFC(request):
         return HttpResponse('Error')
     else:
         return HttpResponse(card)
-"""
+
 
 def check_in(request, lock_num):
     """
@@ -148,32 +143,3 @@ def success(request):
         'flag': check_out_flag,
     }
     return render(request, 'ILSA/success.html', context)
-
-def swipetest(request):
-    """
-    testing swipe function
-    """
-    swiped_card_number = 'TEST Swipe'
-    print('swipe test')
-    """If the card uid is in the admin table, redirect to admin login"""
-    if Admin.objects.filter(admin_uid=swiped_card_number).exists():
-        return redirect(reverse('admin:index'))
-    elif Locker.objects.filter(card_uid=swiped_card_number).exists():
-        """The card uid is already in the database, so were checking out of that locker"""
-        locker = Locker.objects.get(card_uid=swiped_card_number)
-        locker.card_uid = '0'
-        locker.check_out_time = datetime.datetime.now().strftime('%H:%M:%S')
-        locker.unlockable = True
-        locker.save()
-
-        request.session['locker_number'] = locker.lock_num
-        request.session['check_out_flag'] = True
-        request.session.modified = True
-
-        return redirect('ILSA:success')
-
-    """Card wasn't in either database so pass the card uid to the locker view"""
-    request.session['card'] = swiped_card_number
-    request.session.modified = True
-
-    return redirect('ILSA:lockers')

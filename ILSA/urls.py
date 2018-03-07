@@ -9,6 +9,5 @@ urlpatterns =[
     path('lockers/check_in/<int:lock_num>/', views.check_in, name='check in'),
     path('lockers/arduino/<str:mac_address>/<int:battery_level>/', views.arduino, name='arduino'),
     path('lockers/success/', views.success, name='success'),
-    path('NFC', views.NFC, name='NFC'),
-    path('swipetest', views.swipetest, name='swipe test'),
+    path('NFC', views.NFC, name='NFC')
 ]
