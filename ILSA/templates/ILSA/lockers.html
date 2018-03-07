@@ -33,8 +33,16 @@
         font-size: 50px;
     }
     #submit {
+        width: 40%;
+        height: 15%;
+        background-color: lightgrey;
+        color: black;
+        border-radius: 25px;
+        font-size: 50px;
+    }
+    #cancel {
         width: 80%;
-        height:15%;
+        height: 15%;
         background-color: lightgrey;
         color: black;
         border-radius: 25px;
@@ -72,6 +80,7 @@
     <p>No lockers are configured.</p>
  {% endif %}
  <div class="divider" />
+ <a class="cancel" id="cancel" href="/ILSA">Cancel</a>
 
 <script>
 function lockerSelected(selected_id) {
@@ -85,6 +94,8 @@ function lockerSelected(selected_id) {
         });
         var body = document.getElementById("body");
         body.append(button);
+
+        document.getElementById('cancel').style.width = "40%";
     } else {
         var submit_button = document.getElementById('submit');
         submit_button.parentNode.removeChild(submit_button);
