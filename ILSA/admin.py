@@ -7,7 +7,7 @@ class LockerAdmin(admin.ModelAdmin):
         ('Date Information', {'fields': ['check_out_time'], 'classes': ['collapse']}),
     ]
     list_display = ('lock_num', 'status', 'unlockable', 'battery_level', 'check_out_time')
-    readonly_fields = 'battery_level'
+    readonly_fields = ['battery_level']
     list_filter = ['check_out_time']
 
 class AdminPage(admin.ModelAdmin):
