@@ -127,6 +127,9 @@ def arduino(request, mac_address, battery_level):
                 locker.save()
                 return HttpResponse("Unlock")
         else:
+            if battery_level < 50 and locker.card_uid == '0':
+                locker.status = 'Low_Battery'
+            locker.save()
             return HttpResponse("Lock")
     else:
         return HttpResponse("No Locker")
