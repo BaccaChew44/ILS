@@ -39,6 +39,7 @@
         color: black;
         border-radius: 25px;
         font-size: 50px;
+        visibility: hidden;
     }
     #cancel {
         width: 20%;
@@ -83,7 +84,7 @@
     <p>No lockers are configured.</p>
  {% endif %}
  <div class="divider"> </div>
- <button class="submit" id="submit" disabled="true">Check Out Locker</button>
+ <button class="submit" id="submit">Check Out Locker</button>
  <button class="cancel" id="cancel" onclick="cancelSelected()">Cancel</button>
 </body>
 </html>
@@ -96,7 +97,7 @@
         submit_button.addEventListener("click", function() {
             window.location.href= './check_in/' + selected_id + '/'
         });
-        submit_button.removeAttribute("disabled");
+        submit_button.style.visibility = "visible"
     }
 
     function cancelSelected() {
